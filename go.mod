@@ -1,4 +1,4 @@
-module github.com/ricardoraposo/blogs-api-go
+module github.com/ricardoraposo/blogs_api_go
 
 go 1.21.3
 
