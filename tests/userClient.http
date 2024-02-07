@@ -4,5 +4,6 @@ Content-Type: application/json
 {
   "display_name": "John Doe",
   "email": "j@doe.com",
-  "password": "password123"
+  "password": "password123",
+  "image": "https://example.com/image.jpg"
 }
