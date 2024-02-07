@@ -13,7 +13,7 @@ func TestNewUser(t *testing.T) {
 	assert.NotNil(t, user)
 	assert.NotEmpty(t, user.ID)
 	assert.NotEmpty(t, user.Password)
-	assert.Equal(t, "John Doe", user.DisplaName)
+	assert.Equal(t, "John Doe", user.DisplayName)
 	assert.Equal(t, "j@j.com", user.Email)
 }
 
