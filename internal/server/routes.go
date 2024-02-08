@@ -28,6 +28,7 @@ func UserRoutes(db *sql.DB) func(r chi.Router) {
 	return func(r chi.Router) {
 		userDB := database.NewUserDB(db)
 		userHandler := handlers.NewUserHandler(userDB)
+
 		r.Post("/", userHandler.CreateUser)
 		r.Get("/", userHandler.GetUsers)
 		r.Get("/search", userHandler.GetUserByEmail)
@@ -39,7 +40,18 @@ func CategoryRoutes(db *sql.DB) func(r chi.Router) {
     return func(r chi.Router) {
         categoryDB := database.NewCategoryDB(db)
         categoryHandler := handlers.NewCategoryHandler(categoryDB)
+
         r.Post("/", categoryHandler.CreateCategory)
         r.Get("/", categoryHandler.GetCategories)
+    }
+}
+
+func BlogPostRoutes(db *sql.DB) func(r chi.Router) {
+    return func(r chi.Router) {
+        blogPostDB := database.NewBlogPostDB(db)
+        postCategoryDB := database.NewPostCategoryDB(db)
+        blogPostHandler := handlers.NewBlogPostHandler(blogPostDB, postCategoryDB)
+
+        r.Post("/", blogPostHandler.CreateBlogPost)
     }
 }

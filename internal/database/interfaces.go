@@ -18,3 +18,7 @@ type CategoryDBInterface interface {
 type BlogPostDBInterface interface {
     CreateBlogPost(blogPost *entity.BlogPost) (*entity.BlogPost, error)
 }
+
+type PostCategoryDBInterface interface {
+    CreatePostCategory(postID, categoryID string) error
+}
