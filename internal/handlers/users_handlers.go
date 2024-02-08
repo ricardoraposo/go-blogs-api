@@ -65,41 +65,29 @@ func (h *UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
-    id := chi.URLParam(r, "id")
+	id := chi.URLParam(r, "id")
 
-    user, err := h.UserDB.GetByID(id)
-    if err != nil {
-        utils.WriteToJson(w, map[string]string{"error": "something went wrong"})
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
+	user, err := h.UserDB.GetByID(id)
+	if err != nil {
+		utils.WriteToJson(w, map[string]string{"error": "No user found with this id"})
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
 
-    if user == nil {
-        utils.WriteToJson(w, map[string]string{"error": "user not found"})
-        w.WriteHeader(http.StatusNotFound)
-        return
-    }
-
-    utils.WriteToJson(w, user)
-    w.WriteHeader(http.StatusOK)
+	utils.WriteToJson(w, user)
+	w.WriteHeader(http.StatusOK)
 }
 
 func (h *UserHandler) GetUserByEmail(w http.ResponseWriter, r *http.Request) {
-    email := r.URL.Query().Get("email")
+	email := r.URL.Query().Get("email")
 
 	user, err := h.UserDB.GetByEmail(email)
-    if err != nil {
-        utils.WriteToJson(w, map[string]string{"error": "something went wrong"})
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
+	if err != nil {
+		utils.WriteToJson(w, map[string]string{"error": "No user found with this email"})
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
 
-    if user == nil {
-        utils.WriteToJson(w, map[string]string{"error": "user not found"})
-        w.WriteHeader(http.StatusNotFound)
-        return
-    }
-
-    utils.WriteToJson(w, user)
-    w.WriteHeader(http.StatusOK)
+	utils.WriteToJson(w, user)
+	w.WriteHeader(http.StatusOK)
 }
