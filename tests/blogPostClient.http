@@ -1,0 +1,9 @@
+POST http://localhost:8000/posts
+Content-Type: application/json
+
+{
+    "title": "My first post",
+    "content": "This is my first post",
+    "user_id": "01fbb1c3-6a8b-421c-a3ef-e22d8fa099dc",
+    "categories": ["15f0a329-5bd5-4da0-b46c-c4c32922742e"]
+}

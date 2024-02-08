@@ -11,7 +11,7 @@ func NewPostCategoryDB(db *sql.DB) PostCategoryDBInterface {
 }
 
 func (db *postCategoryDB) CreatePostCategory(postID, categoryID string) error {
-    stmt, err := db.Prepare("INSERT INTO post_categories (post_id, category_id) VALUES (?, ?)")
+    stmt, err := db.Prepare("INSERT INTO posts_categories (post_id, category_id) VALUES (?, ?)")
     if err != nil {
         return err
     }
