@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/ricardoraposo/blogs-api-go/internal/database"
-	"github.com/ricardoraposo/blogs-api-go/internal/entities"
+	"github.com/ricardoraposo/blogs-api-go/internal/entity"
 	"github.com/ricardoraposo/blogs-api-go/internal/utils"
 )
 
@@ -34,7 +34,7 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	user, err := entities.NewUser(p.DisplayName, p.Email, p.Password, p.Image)
+	user, err := entity.NewUser(p.DisplayName, p.Email, p.Password, p.Image)
 	if err != nil {
 		utils.WriteToJson(w, map[string]string{"error": "something went wrong"})
 		http.Error(w, err.Error(), http.StatusInternalServerError)

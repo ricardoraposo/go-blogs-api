@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/ricardoraposo/blogs-api-go/internal/database"
-	"github.com/ricardoraposo/blogs-api-go/internal/entities"
+	"github.com/ricardoraposo/blogs-api-go/internal/entity"
 	"github.com/ricardoraposo/blogs-api-go/internal/utils"
 )
 
@@ -29,7 +29,7 @@ func (h *CategoryHandler) CreateCategory(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	category := entities.NewCategory(p.Name)
+	category := entity.NewCategory(p.Name)
 
     newCategory, err := h.categoryDB.CreateCategory(category)
     if err != nil {

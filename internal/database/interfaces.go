@@ -1,16 +1,16 @@
 package database
 
-import "github.com/ricardoraposo/blogs-api-go/internal/entities"
+import "github.com/ricardoraposo/blogs-api-go/internal/entity"
 
 type UserDBInterface interface {
-	GetUsers() ([]entities.User, error)
-    GetByEmail(email string) (*entities.User, error)
-    GetByID(id string) (*entities.User, error)
-	CreateUser(user *entities.User) (*entities.User, error)
+	GetUsers() ([]entity.User, error)
+    GetByEmail(email string) (*entity.User, error)
+    GetByID(id string) (*entity.User, error)
+	CreateUser(user *entity.User) (*entity.User, error)
 }
 
 type CategoryDBInterface interface {
-    CreateCategory(category *entities.Category) (*entities.Category, error)
-    GetCategories() ([]*entities.Category, error)
+    CreateCategory(category *entity.Category) (*entity.Category, error)
+    GetCategories() ([]*entity.Category, error)
     HasCategory(id string) (bool, error)
 }
