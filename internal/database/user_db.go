@@ -14,8 +14,8 @@ func NewUserDB(db *sql.DB) UserDBInterface {
 	return &userDB{db}
 }
 
-func (a *userDB) GetUsers() ([]entities.User, error) {
-	rows, err := a.Query("SELECT * FROM users")
+func (db *userDB) GetUsers() ([]entities.User, error) {
+	rows, err := db.Query("SELECT * FROM users")
 	if err != nil {
 		return nil, err
 	}
@@ -32,8 +32,8 @@ func (a *userDB) GetUsers() ([]entities.User, error) {
 	return users, nil
 }
 
-func (a *userDB) CreateUser(user *entities.User) (*entities.User, error) {
-	stmt, err := a.Prepare("INSERT INTO users (id, display_name, email, password, image) VALUES (?, ?, ?, ?, ?)")
+func (db *userDB) CreateUser(user *entities.User) (*entities.User, error) {
+	stmt, err := db.Prepare("INSERT INTO users (id, display_name, email, password, image) VALUES (?, ?, ?, ?, ?)")
 	if err != nil {
 		return nil, err
 	}
@@ -46,9 +46,9 @@ func (a *userDB) CreateUser(user *entities.User) (*entities.User, error) {
 	return user, nil
 }
 
-func (a *userDB) GetByEmail(email string) (*entities.User, error) {
+func (db *userDB) GetByEmail(email string) (*entities.User, error) {
 	var user entities.User
-	stmt, err := a.Prepare("SELECT * FROM users WHERE email = ?")
+	stmt, err := db.Prepare("SELECT * FROM users WHERE email = ?")
 	if err != nil {
 		return nil, err
 	}
@@ -60,9 +60,9 @@ func (a *userDB) GetByEmail(email string) (*entities.User, error) {
 	return &user, nil
 }
 
-func (a *userDB) GetByID(id string) (*entities.User, error) {
+func (db *userDB) GetByID(id string) (*entities.User, error) {
 	var user entities.User
-	stmt, err := a.Prepare("SELECT * FROM users WHERE id = ?")
+	stmt, err := db.Prepare("SELECT * FROM users WHERE id = ?")
 	if err != nil {
 		return nil, err
 	}

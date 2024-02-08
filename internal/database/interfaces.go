@@ -8,3 +8,8 @@ type UserDBInterface interface {
     GetByID(id string) (*entities.User, error)
 	CreateUser(user *entities.User) (*entities.User, error)
 }
+
+type CategoryDBInterface interface {
+    CreateCategory(category *entities.Category) (*entities.Category, error)
+    GetCategories() ([]*entities.Category, error)
+}
