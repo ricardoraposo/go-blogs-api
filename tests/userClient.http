@@ -7,3 +7,9 @@ Content-Type: application/json
   "password": "password123",
   "image": "https://example.com/image.jpg"
 }
+
+GET http://localhost:8000/users/search?email=j@doe.com
+
+GET http://localhost:8000/users
+
+GET http://localhost:8000/users/01fbb1c3-6a8b-421c-a3ef-e22d8fa099dc
