@@ -20,6 +20,8 @@ func NewRouter() *chi.Mux {
 	r.Get("/health", db.HealthCheck)
 
 	r.Post("/users", userHandler.CreateUser)
+    r.Get("/users", userHandler.GetUsers)
+    r.Get("/users/search", userHandler.GetUserByEmail)
 
 	return r
 }

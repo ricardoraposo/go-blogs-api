@@ -33,20 +33,52 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-    user, err := entities.NewUser(p.DisplayName, p.Email, p.Password, p.Image)
+	user, err := entities.NewUser(p.DisplayName, p.Email, p.Password, p.Image)
+	if err != nil {
+		utils.WriteToJson(w, map[string]string{"error": "something went wrong"})
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	newUser, err := h.UserDB.CreateUser(user)
+	if err != nil {
+		utils.WriteToJson(w, map[string]string{"error": "something went wrong"})
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	utils.WriteToJson(w, newUser)
+	w.WriteHeader(http.StatusCreated)
+}
+
+func (h *UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
+	users, err := h.UserDB.GetUsers()
+	if err != nil {
+		utils.WriteToJson(w, map[string]string{"error": "something went wrong"})
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	utils.WriteToJson(w, users)
+	w.WriteHeader(http.StatusOK)
+}
+
+func (h *UserHandler) GetUserByEmail(w http.ResponseWriter, r *http.Request) {
+    email := r.URL.Query().Get("email")
+
+	user, err := h.UserDB.GetByEmail(email)
     if err != nil {
         utils.WriteToJson(w, map[string]string{"error": "something went wrong"})
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
 
-    newUser, err := h.UserDB.CreateUser(user)
-    if err != nil {
-        utils.WriteToJson(w, map[string]string{"error": "something went wrong"})
-        http.Error(w, err.Error(), http.StatusInternalServerError)
+    if user == nil {
+        utils.WriteToJson(w, map[string]string{"error": "user not found"})
+        w.WriteHeader(http.StatusNotFound)
         return
     }
 
-    utils.WriteToJson(w, newUser)
-    w.WriteHeader(http.StatusCreated)
+    utils.WriteToJson(w, user)
+    w.WriteHeader(http.StatusOK)
 }
