@@ -17,6 +17,7 @@ type CategoryDBInterface interface {
 
 type BlogPostDBInterface interface {
     CreateBlogPost(blogPost *entity.BlogPost) (*entity.BlogPost, error)
+    GetBlogPosts() ([]*entity.BlogPostWithUser, error)
 }
 
 type PostCategoryDBInterface interface {

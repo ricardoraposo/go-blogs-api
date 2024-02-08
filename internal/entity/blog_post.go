@@ -24,6 +24,16 @@ type BlogPost struct {
 	Updated   time.Time `json:"updated"`
 }
 
+type BlogPostWithUser struct {
+	ID        string    `json:"id"`
+	Title     string    `json:"title"`
+	Content   string    `json:"content"`
+	UserID    string    `json:"user_id"`
+	Published time.Time `json:"published"`
+	Updated   time.Time `json:"updated"`
+    User      *User     `json:"user"`
+}
+
 func NewBlogPost(title string, content string, userID string) *BlogPost {
 	return &BlogPost{
 		ID:        uuid.New().String(),

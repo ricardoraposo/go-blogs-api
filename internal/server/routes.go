@@ -20,6 +20,7 @@ func NewRouter() *chi.Mux {
 
 	r.Route("/users", UserRoutes(db.DB))
     r.Route("/categories", CategoryRoutes(db.DB))
+    r.Route("/posts", BlogPostRoutes(db.DB))
 
 	return r
 }
@@ -52,6 +53,7 @@ func BlogPostRoutes(db *sql.DB) func(r chi.Router) {
         postCategoryDB := database.NewPostCategoryDB(db)
         blogPostHandler := handlers.NewBlogPostHandler(blogPostDB, postCategoryDB)
 
+        r.Get("/", blogPostHandler.GetBlogPosts)
         r.Post("/", blogPostHandler.CreateBlogPost)
     }
 }

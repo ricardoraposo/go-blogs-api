@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/ricardoraposo/blogs-api-go/internal/database"
@@ -45,6 +46,7 @@ func (h *BlogPostHandler) CreateBlogPost(w http.ResponseWriter, r *http.Request)
     for _, categoryID := range p.Categories {
         err := h.postCategoryDB.CreatePostCategory(post.ID, categoryID)
         if err != nil {
+            log.Println(err)
             utils.WriteToJson(w, map[string]string{"error": "could not create post category"})
             w.WriteHeader(http.StatusInternalServerError)
             return
@@ -53,4 +55,16 @@ func (h *BlogPostHandler) CreateBlogPost(w http.ResponseWriter, r *http.Request)
 
     utils.WriteToJson(w, post)
     w.WriteHeader(http.StatusCreated)
+}
+
+func (h *BlogPostHandler) GetBlogPosts(w http.ResponseWriter, r *http.Request) {
+    posts, err := h.blogPostDB.GetBlogPosts()
+    if err != nil {
+        utils.WriteToJson(w, map[string]string{"error": "could not get posts"})
+        w.WriteHeader(http.StatusInternalServerError)
+        return
+    }
+
+    utils.WriteToJson(w, posts)
+    w.WriteHeader(http.StatusOK)
 }
