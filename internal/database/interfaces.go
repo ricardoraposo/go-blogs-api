@@ -14,3 +14,7 @@ type CategoryDBInterface interface {
     GetCategories() ([]*entity.Category, error)
     HasCategory(id string) (bool, error)
 }
+
+type BlogPostDBInterface interface {
+    CreateBlogPost(blogPost *entity.BlogPost) (*entity.BlogPost, error)
+}
