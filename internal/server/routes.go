@@ -19,10 +19,17 @@ func NewRouter() *chi.Mux {
 
 	r.Get("/health", db.HealthCheck)
 
-	r.Post("/users", userHandler.CreateUser)
-    r.Get("/users", userHandler.GetUsers)
-    r.Get("/users/search", userHandler.GetUserByEmail)
-    r.Get("/users/{id}", userHandler.GetUserByID)
+	r.Route("/users", UserRoutes(db.DB))
 
 	return r
+}
+func UserRoutes(db *sql.DB) func(r chi.Router) {
+	return func(r chi.Router) {
+		userDB := database.NewUserDB(db)
+		userHandler := handlers.NewUserHandler(userDB)
+		r.Post("/", userHandler.CreateUser)
+		r.Get("/", userHandler.GetUsers)
+		r.Get("/search", userHandler.GetUserByEmail)
+		r.Get("/{id}", userHandler.GetUserByID)
+	}
 }
