@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/ricardoraposo/blogs-api-go/internal/database"
 	"github.com/ricardoraposo/blogs-api-go/internal/entities"
 	"github.com/ricardoraposo/blogs-api-go/internal/utils"
@@ -61,6 +62,26 @@ func (h *UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
 
 	utils.WriteToJson(w, users)
 	w.WriteHeader(http.StatusOK)
+}
+
+func (h *UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
+    id := chi.URLParam(r, "id")
+
+    user, err := h.UserDB.GetByID(id)
+    if err != nil {
+        utils.WriteToJson(w, map[string]string{"error": "something went wrong"})
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    if user == nil {
+        utils.WriteToJson(w, map[string]string{"error": "user not found"})
+        w.WriteHeader(http.StatusNotFound)
+        return
+    }
+
+    utils.WriteToJson(w, user)
+    w.WriteHeader(http.StatusOK)
 }
 
 func (h *UserHandler) GetUserByEmail(w http.ResponseWriter, r *http.Request) {
