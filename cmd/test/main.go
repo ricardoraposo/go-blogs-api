@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/ricardoraposo/blogs-api-go/internal/database"
-	"github.com/ricardoraposo/blogs-api-go/internal/entities"
+	"github.com/ricardoraposo/blogs-api-go/internal/entity"
 )
 
 func main() {
@@ -12,7 +12,7 @@ func main() {
 
 	accountDB := database.NewUserDB(db.DB)
 
-	user, _ := entities.NewUser("Ricardo", "r@r.com", "123456", "image")
+	user, _ := entity.NewUser("Ricardo", "r@r.com", "123456", "image")
 
 	_, err := accountDB.CreateUser(user)
 	if err != nil {
