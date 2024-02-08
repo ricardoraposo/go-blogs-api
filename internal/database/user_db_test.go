@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/ricardoraposo/blogs-api-go/internal/entities"
+	"github.com/ricardoraposo/blogs-api-go/internal/entity"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -21,7 +21,7 @@ func TestCreateUser(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	user, err := entities.NewUser("test", "test@test.com", "test", "test")
+	user, err := entity.NewUser("test", "test@test.com", "test", "test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -29,7 +29,7 @@ func TestCreateUser(t *testing.T) {
 	userDB := NewUserDB(db)
 	userDB.CreateUser(user)
 
-	var userFromDB entities.User
+	var userFromDB entity.User
 	stmt, _ := db.Prepare("SELECT * from users where id = ?")
 	stmt.QueryRow(user.ID).Scan(&userFromDB.ID, &userFromDB.DisplayName, &userFromDB.Email, &userFromDB.Password, &userFromDB.Image)
 
@@ -51,7 +51,7 @@ func TestGetByEmail(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	user, err := entities.NewUser("test", "test@test.com", "test", "test")
+	user, err := entity.NewUser("test", "test@test.com", "test", "test")
 	if err != nil {
 		t.Fatal(err)
 	}
