@@ -12,4 +12,5 @@ type UserDBInterface interface {
 type CategoryDBInterface interface {
     CreateCategory(category *entities.Category) (*entities.Category, error)
     GetCategories() ([]*entities.Category, error)
+    HasCategory(id string) (bool, error)
 }

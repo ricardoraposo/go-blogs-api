@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 
-	"github.com/ricardoraposo/blogs-api-go/internal/entities"
+	"github.com/ricardoraposo/blogs-api-go/internal/entity"
 )
 
 type categoryDB struct {
@@ -14,7 +14,7 @@ func NewCategoryDB(db *sql.DB) CategoryDBInterface {
 	return &categoryDB{db}
 }
 
-func (db *categoryDB) CreateCategory(category *entities.Category) (*entities.Category, error) {
+func (db *categoryDB) CreateCategory(category *entity.Category) (*entity.Category, error) {
 	stmt, err := db.Prepare("INSERT INTO categories (id, name) VALUES (?, ?)")
 	if err != nil {
 		return nil, err
@@ -27,16 +27,16 @@ func (db *categoryDB) CreateCategory(category *entities.Category) (*entities.Cat
 	return category, nil
 }
 
-func (db *categoryDB) GetCategories() ([]*entities.Category, error) {
+func (db *categoryDB) GetCategories() ([]*entity.Category, error) {
 	rows, err := db.Query("SELECT id, name FROM categories")
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var categories []*entities.Category
+	var categories []*entity.Category
 	for rows.Next() {
-		var category entities.Category
+		var category entity.Category
 		if err := rows.Scan(&category.ID, &category.Name); err != nil {
 			return nil, err
 		}
@@ -44,4 +44,13 @@ func (db *categoryDB) GetCategories() ([]*entities.Category, error) {
 	}
 
 	return categories, nil
+}
+
+func (db *categoryDB) HasCategory(id string) (bool, error) {
+    var exists bool
+    err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM categories WHERE id = ?)", id).Scan(&exists)
+    if err != nil {
+        return false, err
+    }
+    return exists, nil
 }
