@@ -58,6 +58,7 @@ func BlogPostRoutes(db *sql.DB) func(r chi.Router) {
 
 		r.Use(middlewares.VerifyJWT)
 		r.Get("/", blogPostHandler.GetBlogPosts)
+		r.Get("/{id}", blogPostHandler.GetBlogPostByID)
 		r.Post("/", blogPostHandler.CreateBlogPost)
 	}
 }

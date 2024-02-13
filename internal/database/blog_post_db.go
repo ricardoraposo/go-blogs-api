@@ -20,34 +20,49 @@ func (db *blogPostDB) CreateBlogPost(blogPost *entity.BlogPost) (*entity.BlogPos
 		return nil, err
 	}
 
-    _, err = stmt.Exec(blogPost.ID, blogPost.Title, blogPost.Content, blogPost.UserID, blogPost.Published, blogPost.Updated)
-    if err != nil {
-        return nil, err
-    }
+	_, err = stmt.Exec(blogPost.ID, blogPost.Title, blogPost.Content, blogPost.UserID, blogPost.Published, blogPost.Updated)
+	if err != nil {
+		return nil, err
+	}
 
-    return blogPost, nil
+	return blogPost, nil
 }
 
 func (db *blogPostDB) GetBlogPosts() ([]*entity.BlogPostWithUser, error) {
-    stmt, err := db.Prepare("SELECT * FROM blog_posts JOIN users ON blog_posts.user_id = users.id")
-    if err != nil {
-        return nil, err
-    }
+	stmt, err := db.Prepare("SELECT * FROM blog_posts JOIN users ON blog_posts.user_id = users.id")
+	if err != nil {
+		return nil, err
+	}
 
-    rows, err := stmt.Query()
-    if err != nil {
-        return nil, err
-    }
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
 
-    var posts []*entity.BlogPostWithUser
-    for rows.Next() {
-        var post entity.BlogPostWithUser
-        err = rows.Scan(&post.ID, &post.Title, &post.Content, &post.UserID, &post.Published, &post.Updated, &post.User.ID, &post.User.DisplayName, &post.User.Email)
-        if err != nil {
-            return nil, err
-        }
-        posts = append(posts, &post)
-    }
+	var posts []*entity.BlogPostWithUser
+	for rows.Next() {
+		var post entity.BlogPostWithUser
+		err = rows.Scan(&post.ID, &post.Title, &post.Content, &post.UserID, &post.Published, &post.Updated, &post.User.ID, &post.User.DisplayName, &post.User.Email)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, &post)
+	}
 
-    return posts, nil
+	return posts, nil
+}
+
+func (db *blogPostDB) GetBlogPostByID(id string) (*entity.BlogPostWithUser, error) {
+	stmt, err := db.Prepare("SELECT * FROM blog_posts JOIN users ON blog_posts.user_id = users.id WHERE blog_posts.id = ?")
+	if err != nil {
+		return nil, err
+	}
+
+	var post entity.BlogPostWithUser
+	err = stmt.QueryRow(id).Scan(&post.ID, &post.Title, &post.Content, &post.UserID, &post.Published, &post.Updated, &post.User.ID, &post.User.DisplayName, &post.User.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	return &post, nil
 }
